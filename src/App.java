@@ -209,13 +209,20 @@ public class App {
      * @param pedido O pedido que deve ser finalizado.
      */
     public static void finalizarPedido(Pedido pedido) {
-    	
-    	// TODO
+    	pilhaPedidos.empilhar(pedido);
     }
     
     public static void listarProdutosPedidosRecentes() {
-    	
-    	// TODO
+    	Pilha<Pedido> aux = new Pilha<>();
+        while(!pilhaPedidos.vazia()){
+            Pedido item = pilhaPedidos.desempilhar();
+            aux.empilhar(item);
+            System.out.println(item);
+        }
+
+        while (!aux.vazia()) {
+            pilhaPedidos.empilhar(aux.desempilhar());
+        }
     }
     
 	public static void main(String[] args) {
