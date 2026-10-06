@@ -49,12 +49,44 @@ public class Pilha<E> {
 	 * uma exceção será lançada.
 	 *
 	 * @param numItens o número de itens a serem copiados da pilha original.
-	 * @return uma nova instância de Pilha<E> contendo os numItens primeiros elementos.
+	 * @return uma nova instância de Pilha<E> contendo os numItens primeiros
+	 *         elementos.
 	 * @throws IllegalArgumentException se a pilha não contém numItens elementos.
 	 */
 	public Pilha<E> subPilha(int numItens) {
-		
-		// TODO
-		return null;
+		Pilha<E> temp = new Pilha<>();
+		int total = 0;
+
+		while (!this.vazia()) {
+			temp.empilhar(this.desempilhar());
+			total++;
+		}
+
+		if (total < numItens) {
+			while (!temp.vazia()) {
+				this.empilhar(temp.desempilhar());
+			}
+			throw new IllegalArgumentException("A pilha possui menos elementos do que o especificado.");
+		}
+
+		Pilha<E> resultado = new Pilha<>();
+		Pilha<E> auxInverso = new Pilha<>();
+		int atual = 0;
+
+		while (!temp.vazia()) {
+			E elemento = temp.desempilhar();
+			this.empilhar(elemento);
+
+			if (atual < numItens) {
+				auxInverso.empilhar(elemento);
+			}
+			atual++;
+		}
+
+		while (!auxInverso.vazia()) {
+			resultado.empilhar(auxInverso.desempilhar());
+		}
+
+		return resultado;
 	}
 }
