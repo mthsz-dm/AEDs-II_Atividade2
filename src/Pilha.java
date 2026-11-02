@@ -43,48 +43,42 @@ public class Pilha<E> {
 	/**
 	 * Cria e devolve uma nova pilha contendo os primeiros numItens elementos
 	 * do topo da pilha atual.
-	 * 
-	 * Os elementos são mantidos na mesma ordem em que estavam na pilha original.
+	 *
+	 * Os elementos são mantidos na mesma ordem em que estavam na pilha original,
+	 * que permanece inalterada ao final do método.
 	 * Caso a pilha atual possua menos elementos do que o valor especificado,
 	 * uma exceção será lançada.
 	 *
 	 * @param numItens o número de itens a serem copiados da pilha original.
 	 * @return uma nova instância de Pilha<E> contendo os numItens primeiros
 	 *         elementos.
-	 * @throws IllegalArgumentException se a pilha não contém numItens elementos.
+	 * @throws IllegalArgumentException se numItens for negativo ou se a pilha
+	 *                                  não contém numItens elementos.
 	 */
 	public Pilha<E> subPilha(int numItens) {
-		Pilha<E> temp = new Pilha<>();
-		int total = 0;
 
-		while (!this.vazia()) {
-			temp.empilhar(this.desempilhar());
-			total++;
+		if (numItens < 0) {
+			throw new IllegalArgumentException("A quantidade de elementos não pode ser negativa.");
 		}
 
-		if (total < numItens) {
-			while (!temp.vazia()) {
-				this.empilhar(temp.desempilhar());
-			}
-			throw new IllegalArgumentException("A pilha possui menos elementos do que o especificado.");
+		Pilha<E> aux = new Pilha<>();
+		int copiados = 0;
+
+		while (copiados < numItens && !this.vazia()) {
+			aux.empilhar(this.desempilhar());
+			copiados++;
 		}
 
 		Pilha<E> resultado = new Pilha<>();
-		Pilha<E> auxInverso = new Pilha<>();
-		int atual = 0;
 
-		while (!temp.vazia()) {
-			E elemento = temp.desempilhar();
+		while (!aux.vazia()) {
+			E elemento = aux.desempilhar();
 			this.empilhar(elemento);
-
-			if (atual < numItens) {
-				auxInverso.empilhar(elemento);
-			}
-			atual++;
+			resultado.empilhar(elemento);
 		}
 
-		while (!auxInverso.vazia()) {
-			resultado.empilhar(auxInverso.desempilhar());
+		if (copiados < numItens) {
+			throw new IllegalArgumentException("A pilha possui menos elementos do que o especificado.");
 		}
 
 		return resultado;
